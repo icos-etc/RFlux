@@ -47,9 +47,6 @@ The data cleaning is based on a two-step procedure. In the first stage, fluxes t
 Returns a dataframe containing:
 \item{TIMESTAMP_START}{ISO timestamp start of averaging period (format: \emph{yyyymmddHHMM}).}
 \item{TIMESTAMP_END}{ISO timestamp end of averaging period (format: \emph{yyyymmddHHMM}).}
-\item{TAU_UNCLEANED}{Momentum flux (uncleaned).}
-\item{TAU}{Momentum flux (cleaned).}
-\item{TAU_DATA_FLAG}{Flag for TAU (0: observed flux for which any quality control (QC) tests provided negligible evidences of error; 1: outlying flux rejected because at least one of the QC tests provided a moderate evidence of error; 2: flux removed because at least one of the QC test provided a severe evidence of error).}
 \item{H_UNCLEANED}{Sensible heat turbulent flux (no storage correction, uncleaned).}
 \item{H}{Sensible heat turbulent flux (no storage correction, cleaned).}
 \item{H_DATA_FLAG}{Flag for H (0: observed flux for which any quality control (QC) tests provided negligible evidences of error; 1: outlying flux rejected because at least one of the QC tests provided a moderate evidence of error; 2: flux removed because at least one of the QC test provided a severe evidence of error).}
@@ -61,37 +58,101 @@ Returns a dataframe containing:
 \item{NEE_UNCLEANED}{Net Ecosystem Exchange (uncleaned).}
 \item{NEE}{Net Ecosystem Exchange (cleaned).}
 \item{NEE_DATA_FLAG}{Flag for NEE (i.e., 0: observed flux for which any quality control (QC) tests provided negligible evidences of error; 1: outlying flux rejected because at least one of the QC tests provided a moderate evidence of error; 2: flux removed because at least one of the QC test provided a severe evidence of error).}
-\item{X_OUTLYING_FLAG}{Flag for the X flux variable denoting outliers (0: no outlying flux; 1: outlying flux).}
-\item{X_OOR_FLAG}{Flag for the X flux variable denoting values out of the physically plausible range (0: within range; 2: out of range).}
-\item{X_FMR_STAT}{Fraction of Missing Records in raw, high-frequency, data used for the X flux variable estimation.}
-\item{X_FMR_FLAG}{Flag for the FMR test for the X flux variable (0: negligible evidences of error, IF X_FMR<5; 1: moderate evidences of error, 1 IF 5\eqn{\le}X_FMR\eqn{\le}15; 2: severe evidences of error, 2 IF X_FMR>15).}
-\item{X_LGD_STAT}{Longest Gap Duration in raw, high-frequency, data used for the X flux variable estimation.}
-\item{X_LGD_FLAG}{Flag for the LGD test for X flux variable (0: negligible evidences of error, IF X_LGD<90; 1: moderate evidences of error, IF 90\eqn{\le}X_LGD\eqn{\le}180; 2: severe evidences of error, IF X_LGD>180).}
+\item{H_OUTLYING_FLAG}{Flag for H denoting outliers (0: no outlying flux; 1: outlying flux).}
+\item{LE_OUTLYING_FLAG}{Flag for LE denoting outliers (0: no outlying flux; 1: outlying flux).}
+\item{NEE_OUTLYING_FLAG}{Flag for NEE denoting outliers (0: no outlying flux; 1: outlying flux).}
+\item{H_OOR_FLAG}{Flag for H denoting values out of the physically plausible range (0: within range; 2: out of range).}
+\item{LE_OOR_FLAG}{Flag for LE denoting values out of the physically plausible range (0: within range; 2: out of range).}
+\item{NEE_OOR_FLAG}{Flag for NEE denoting values out of the physically plausible range (0: within range; 2: out of range).}
+\item{H_FMR_STAT}{Fraction of Missing Records in raw, high-frequency, data used for H flux estimation.}
+\item{H_FMR_FLAG}{Flag for the FMR test for H (0: negligible evidences of error, IF FMR<5; 1: moderate evidences of error, 1 IF 5\eqn{\le}FMR\eqn{\le}15; 2: severe evidences of error, 2 IF FMR>15).}
+\item{H_LGD_STAT}{Longest Gap Duration in raw, high-frequency, data used for H flux estimation.}
+\item{H_LGD_FLAG}{Flag for the LGD test for H (0: negligible evidences of error, IF LGD<90; 1: moderate evidences of error, IF 90\eqn{\le}LGD\eqn{\le}180; 2: severe evidences of error, IF LGD>180).}
+\item{LE_FMR_STAT}{Fraction of Missing Records in raw, high-frequency, data used for LE flux estimation.}
+\item{LE_FMR_FLAG}{Flag for the FMR test for LE (0: negligible evidences of error, IF FMR<5; 1, moderate evidences of error, IF 5\eqn{\le}FMR\eqn{\le}15; 2, severe evidences of error, IF FMR>15).}
+\item{LE_LGD_STAT}{Longest Gap Duration in raw, high-frequency, data used for LE flux estimation.}
+\item{LE_LGD_FLAG}{Flag for the LGD test for LE (0: negligible evidences of error, IF LGD<90; 1: moderate evidences of error, IF 90\eqn{\le}LGD\eqn{\le}180; 2: severe evidences of error, IF LGD>180).}
+\item{FC_FMR_STAT}{Fraction of Missing Records in raw, high-frequency, data used for FC flux estimation.}
+\item{FC_FMR_FLAG}{Flag for the FMR test for FC (0: negligible evidences of error, IF FMR<5; 1: moderate evidences of error, IF 5\eqn{\le}FMR\eqn{\le}15; 2: severe evidences of error, IF FMR>15).}
+\item{FC_LGD_STAT}{Longest Gap Duration in raw, high-frequency, data used for FC flux estimation.}
+\item{FC_LGD_FLAG}{Flag for the LGD test for FC (0: negligible evidences of error, IF LGD<90; 1: moderate evidences of error, IF 90\eqn{\le}LGD\eqn{\le}180; 2: severe evidences of error, IF LGD>180).}
 \item{SA_DIAG_FLAG}{Flag for Sonic Anemometer (SA) instrumental diagnostics (0: negligible evidences of error; 2: severe evidences of error).}
 \item{GA_DIAG_FLAG}{Flag for gas analyzer (GA) instrumental diagnostics (0: negligible evidences of error; 2: severe evidences of error).}
 \item{WD}{Wind direction.}
 \item{WSECT_FLAG}{Footprint quality flag indicating periods when wind was blowing from directions known to significantly affect the turbulent flow (0: negligible evidences of error; 2: severe evidences of error).}
-\item{X_LSR_STAT}{Statistic of the Low Signal Resolution test for the X flux varaible.}
-\item{X_LSR_FLAG}{Flag for the LSR test for the X flux variable (0: negligible evidences of error, IF X_LSR_STAT>0.995; 1: moderate evidences of error, IF 0.99\eqn{\le}X_LSR_STAT\eqn{\le}0.995; 2: severe evidences of error, IF X_LSR_STAT<0.99).}
-\item{X_HF5_STAT}{Statistic of the homogeneity test applied on the X variable (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
-\item{X_HF5_FLAG}{Flag for the homogeneity test applied on the X variable (0: negligible evidences of error, IF X_HF5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}X_HF5_STAT\eqn{\le}4; 2: severe evidences of error, IF X_HF5_STAT>4).}
-\item{X_HF10_STAT}{Statistic of the homogeneity test applied on the X variable (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
-\item{X_HF10_FLAG}{Flag for the homogeneity test applied on the X variable (0: negligible evidences of error, IF X_HF10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}X_HF10_STAT\eqn{\le}1; 2: severe evidences of error, IF X_HF10_STAT>1).}
-\item{X_HD5_STAT}{Statistic of the homogeneity test applied on differenced X variable (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
-\item{X_HD5_FLAG}{Flag for the homogeneity test applied on differenced X variable (0: negligible evidences of error, IF X_HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}X_HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF X_HD5_STAT>4).}
-\item{X_HD10_STAT}{Statistic of the homogeneity test applied on differenced X variable (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
-\item{X_HD10_FLAG}{Flag for the homogeneity test applied on differenced X variable (0: negligible evidences of error, IF X_HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}X_HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF X_HD10_STAT>1).}
-\item{X_ACF_STAT}{Autocorrelation at lag 1 for the X variable.}
-\item{X_ACF_FLAG}{Flag for the autocorrelation at lag 1 for the X variable (0: negligible evidences of error, IF X_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<X_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF X_ACF_STAT\eqn{\le}0.5).}
-\item{X_DDI_STAT}{Maximum number of binned data points for the X variable (number of bins proportional to the sample size).}
-\item{X_DDI_FLAG}{Flag for the X_DDI_STAT (0: negligible evidences of error, IF X_DDI_STAT<hz*60*2.5; 1: moderate evidences of error, IF \eqn{hz*60*2.5\le}X_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF X_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
-\item{X_KID_STAT}{Kurtosis Index of Differenced X variable.}
-\item{X_KID_FLAG}{Flag for the X_KID_STAT (0: negligible evidences of error, IF X_KID_STAT<30; 1: moderate evidences of error, IF 30\eqn{\le}X_KID_STAT\eqn{\le}50; 2: severe evidences of error, IF X_KID_STAT>50).}
+\item{H_LSR_STAT}{Statistic of the Low Signal Resolution test for H.}
+\item{H_LSR_FLAG}{Flag for the LSR test for H (0: negligible evidences of error, IF LSR_STAT>0.995; 1: moderate evidences of error, IF 0.99\eqn{\le}LSR_STAT\eqn{\le}0.995; 2: severe evidences of error, IF LSR_STAT<0.99).}
+\item{LE_LSR_STAT}{Statistic of the Low Signal Resolution test for LE.}
+\item{LE_LSR_FLAG}{Flag for the LSR test for LE (0: negligible evidences of error, IF LSR_STAT>0.995; 1: moderate evidences of error, IF 0.99\eqn{\le}LSR_STAT\eqn{\le}0.995; 2: severe evidences of error, IF LSR_STAT<0.99).}
+\item{FC_LSR_STAT}{Statistic of the Low Signal Resolution test for FC.}
+\item{FC_LSR_FLAG}{Flag for the LSR test for FC (0: negligible evidences of error, IF LSR_STAT>0.995; 1: moderate evidences of error, IF 0.99 \eqn{\le}LSR_STAT\eqn{\le}0.995; 2: severe evidences of error, IF LSR_STAT<0.99).}
+\item{W_HF5_STAT}{Statistic of the homogeneity test applied on vertical wind velocity fluctuations (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
+\item{W_HF5_FLAG}{Flag for the homogeneity test applied on vertical wind velocity fluctuations (0: negligible evidences of error, IF HF5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HF5_STAT\eqn{\le}4; 2: severe evidences of error, IF HF5_STAT>4).}
+\item{W_HF10_STAT}{Statistic of the homogeneity test applied on vertical wind velocity fluctuations (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
+\item{W_HF10_FLAG}{Flag for the homogeneity test applied on vertical wind velocity fluctuations (0: negligible evidences of error, IF HF10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HF10_STAT\eqn{\le}1; 2: severe evidences of error, IF HF10_STAT>1).}
+\item{W_HD5_STAT}{Statistic of the homogeneity test applied on differenced vertical wind velocity (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
+\item{W_HD5_FLAG}{Flag for the homogeneity test applied on differenced vertical wind velocity (0: negligible evidences of error, IF HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF HD5_STAT>4).}
+\item{W_HD10_STAT}{Statistic of the homogeneity test applied on differenced vertical wind velocity (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
+\item{W_HD10_FLAG}{Flag for the homogeneity test applied on differenced vertical wind velocity (0: negligible evidences of error, IF HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF HD10_STAT>1).}
+\item{W_ACF_STAT}{Autocorrelation at lag 1 for vertical wind velocity.}
+\item{W_ACF_FLAG}{Flag for the autocorrelation at lag 1 for vertical wind velocity (0: negligible evidences of error, IF W_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<W_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF W_ACF_STAT\eqn{\le}0.5).}
+\item{W_DDI_STAT}{Maximum number of binned data points for vertical wind velocity (number of bins proportional to the sample size).}
+\item{W_DDI_FLAG}{Flag for the W_DDI_STAT (0: negligible evidences of error, IF W_DDI_STAT<hz*60*2.5; 1: moderate evidences of error, IF \eqn{hz*60*2.5\le}W_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF W_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
+\item{T_SONIC_HF5_STAT}{Statistic of the homogeneity test applied on sonic temperature fluctuations (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
+\item{T_SONIC_HF5_FLAG}{Flag for the homogeneity test applied on sonic temperature fluctuations (0: negligible evidences of error, IF HF5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HF5_STAT\eqn{\le}4; 2: severe evidences of error, IF HF5_STAT>4).}
+\item{T_SONIC_HF10_STAT}{Statistic of the homogeneity test applied on sonic temperature fluctuations (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
+\item{T_SONIC_HF10_FLAG}{Flag for the homogeneity test applied on sonic temperature fluctuations (0: negligible evidences of error, IF HF10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HF10_STAT\eqn{\le}1; 2: severe evidences of error, IF HF10_STAT>1).}
+\item{T_SONIC_HD5_STAT}{Statistic of the homogeneity test applied on differenced sonic temperature (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
+\item{T_SONIC_HD5_FLAG}{Flag for the homogeneity test applied on differenced sonic temperature (0: negligible evidences of error, IF HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF HD5_STAT>4).}
+\item{T_SONIC_HD10_STAT}{Statistic of the homogeneity test applied on differenced sonic temperature (percentage of data exceeding \eqn{\mu+/-10\sigma}).} 
+\item{T_SONIC_HD10_FLAG}{Flag for the homogeneity test applied on differenced sonic temperature (0: negligible evidences of error, IF HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF HD10_STAT>1).}
+\item{T_SONIC_ACF_STAT}{Autocorrelation at lag 1 for sonic temperature.}
+\item{T_SONIC_ACF_FLAG}{Flag for the autocorrelation at lag 1 for sonic temperature (0: negligible evidences of error, IF T_SONIC_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<T_SONIC_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF T_SONIC_ACF_STAT\eqn{\le}0.5).}
+\item{T_SONIC_DDI_STAT}{Maximum number of binned data points for sonic temperature (number of bins proportional to the sample size).}
+\item{T_SONIC_DDI_FLAG}{Flag for the T_SONIC_DDI_STAT (0: negligible evidences of error, IF T_SPNIC_DDI_STAT<\eqn{hz*60*2.5}; 1: moderate evidences of error, IF \eqn{hz*60*2.5 \le}T_SONIC_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF T_SONIC_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
+\item{H2O_HF5_STAT}{Statistic of the homogeneity test applied on water vapor fluctuations (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
+\item{H2O_HF5_FLAG}{Flag for the homogeneity test applied on water vapor fluctuations (0: negligible evidences of error, IF HF5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HF5_STAT\eqn{\le}4; 2: severe evidences of error, IF HF5_STAT>4).}
+\item{H2O_HF10_STAT}{Statistic of the homogeneity test applied on water vapor fluctuations (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
+\item{H2O_HF10_FLAG}{Flag for the homogeneity test applied on water vapor fluctuations (0: negligible evidences of error, IF HF10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HF10_STAT\eqn{\le}1; 2: severe evidences of error, IF HF10_STAT>1).} 
+\item{H2O_HD5_STAT}{Statistic of the homogeneity test applied on differenced water vapor (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
+\item{H2O_HD5_FLAG}{Flag for the homogeneity test applied on differenced water vapor (0: negligible evidences of error, IF HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF HD5_STAT>4).}
+\item{H2O_HD10_STAT}{Statistic of the homogeneity test applied on differenced water vapor (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
+\item{H2O_HD10_FLAG}{Flag for the homogeneity test applied on differenced water vapor (0: negligible evidences of error, IF HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF HD10_STAT>1).}
+\item{H2O_ACF_STAT}{Autocorrelation at lag 1 for water vapor.}
+\item{H2O_ACF_FLAG}{Flag for the autocorrelation at lag 1 for water vapor (0: negligible evidences of error, IF H2O_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<H2O_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF H2O_ACF_STAT\eqn{\le}0.5).}
+\item{H2O_DDI_STAT}{Maximum number of binned data points for water vapor (number of bins proportional to the sample size).}
+\item{H2O_DDI_FLAG}{Flag for the H2O_DDI_STAT (0: negligible evidences of error, IF H2O_DDI_STAT<hz*60*2.5; 1: moderate evidences of error, IF \eqn{hz*60*2.5 \le}H2O_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF H2O_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
+\item{CO2_HF5_STAT}{Statistic of the homogeneity test applied on carbon dioxide fluctuations (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
+\item{CO2_HF5_FLAG}{Flag for the homogeneity test applied on carbon dioxide fluctuations (0: negligible evidences of error, IF HF5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HF5_STAT\eqn{\le}4; 2: severe evidences of error, IF HF5_STAT>4).}
+\item{CO2_HF10_STAT}{Statistic of the homogeneity test applied on carbon dioxide fluctuations (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
+\item{CO2_HF10_FLAG}{Flag for the homogeneity test applied on carbon dioxide fluctuations (0: negligible evidences of error, IF HF10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HF10_STAT\eqn{\le}1; 2: severe evidences of error, IF HF10_STAT>1).}
+\item{CO2_HD5_STAT}{Statistic of the homogeneity test applied on differenced carbon dioxide (percentage of data exceeding \eqn{\mu+/-5\sigma}).}
+\item{CO2_HD5_FLAG}{Flag for the homogeneity test applied on differenced carbon dioxide (0: negligible evidences of error, IF HD5_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}HD5_STAT\eqn{\le}4; 2: severe evidences of error, IF HD5_STAT>4).}
+\item{CO2_HD10_STAT}{Statistic of the homogeneity test applied on differenced carbon dioxide (percentage of data exceeding \eqn{\mu+/-10\sigma}).}
+\item{CO2_HD10_FLAG}{Flag for the homogeneity test applied on differenced carbon dioxide (0: negligible evidences of error, IF HD10_STAT<0.5; 1: moderate evidences of error, IF 0.5\eqn{\le}HD10_STAT\eqn{\le}1; 2: severe evidences of error, IF HD10_STAT>1).}
+\item{CO2_ACF_STAT}{Autocorrelation at lag 1 for carbon dioxide.}
+\item{CO2_ACF_FLAG}{Flag for the autocorrelation at lag 1 for carbon dioxide (0: negligible evidences of error, IF CO2_ACF_STAT>0.75; 1: moderate evidences of error, IF 0.5<CO2_ACF_STAT\eqn{\le}0.75; 2: severe evidences of error, IF CO2_ACF_STAT\eqn{\le}0.5).}
+\item{CO2_DDI_STAT}{Maximum number of binned data points for carbon dioxide (number of bins proportional to the sample size).}
+\item{CO2_DDI_FLAG}{Flag for the CO2_DDI_STAT (0: negligible evidences of error, IF CO2_DDI_STAT<\eqn{hz*60*2.5}; 1: moderate evidences of error, IF \eqn{hz*60*2.5 \le}CO2_DDI_STAT<\eqn{hz*60*5}; 2: severe evidences of error, IF CO2_DDI_STAT\eqn{\ge hz*60*5}, where hz denoting the acquisition frequency).}
+\item{W_KID_STAT}{Kurtosis Index of Differenced vertical wind velocity.}
+\item{W_KID_FLAG}{Flag for the W_KID_STAT (0: negligible evidences of error, IF KID_STAT<30; 1: moderate evidences of error, IF 30\eqn{\le}KID_STAT\eqn{\le}50; 2: severe evidences of error, IF KID_STAT>50).}
+\item{T_SONIC_KID_STAT}{Kurtosis Index of Differenced sonic temperature.}
+\item{T_SONIC_KID_FLAG}{Flag for the T_SONIC_KID_STAT (0: negligible evidences of error, IF KID_STAT<30; 1: moderate evidences of error, IF 30\eqn{\le}KID_STAT\eqn{\le}50; 2: severe evidences of error, IF KID_STAT>50).}
+\item{H2O_KID_STAT}{Kurtosis Index of Differenced water vapor.}
+\item{H2O_KID_FLAG}{Flag for the H2O_KID_STAT (0: negligible evidences of error, IF KID_STAT<30; 1: moderate evidences of error, IF 30\eqn{\le}KID_STAT\eqn{\le}50; 2: severe evidences of error, IF KID_STAT>50).}
+\item{CO2_KID_STAT}{Kurtosis Index of Differenced carbon dioxide.}
+\item{CO2_KID_FLAG}{Flag for the CO2_KID_STAT (0: negligible evidences of error, IF KID_STAT<30; 1: moderate evidences of error, IF 30\eqn{\le}KID_STAT\eqn{\le}50; 2: severe evidences of error, IF KID_STAT>50).}
 \item{ITC_STAT}{Statistic of the Integral Turbulence Characteristics test (Foken and Wichura, 1996).}
 \item{ITC_FLAG}{Flag for the ITC test (0: negligible evidences of error, IF ITC_STAT<30; 1: moderate evidences of error, IF 30\eqn{\le}ITC_STAT\eqn{\le}50; 2: severe evidences of error, IF ITC_STAT>50).}
-\item{X_SCF_STAT}{Spectral correction factor for the X variable.}
-\item{X_M98_STAT}{Statistic of the nonstationarity ratio test by Mahrt (1998) for the X flux variable.}
-\item{X_M98_FLAG}{Flag of the X_M98_STAT (0: negligible evidences of error, IF x_M_98_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}X_M98_STAT\eqn{\le}3; 2: severe evidences of error, IF X_M98_STAT>3).}
+\item{H_SCF_STAT}{Spectral correction factor for H.}
+\item{LE_SCF_STAT}{Spectral correction factor for LE.}
+\item{FC_SCF_STAT}{Spectral correction factor for FC.}
+\item{H_M98_STAT}{Statistic of the nonstationarity ratio test by Mahrt (1998) for H.}
+\item{H_M98_FLAG}{Flag of the H_M98_STAT (0: negligible evidences of error, IF M_98_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}M98_STAT\eqn{\le}3; 2: severe evidences of error, IF M98_STAT>3).}
+\item{LE_M98_STAT}{Statistic of the nonstationarity ratio test by Mahrt (1998) for LE.}
+\item{LE_M98_FLAG}{Flag of the LE_M98_STAT (0: negligible evidences of error, IF M_98_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}M98_STAT\eqn{\le}3; 2: severe evidences of error, IF M98_STAT>3).}
+\item{FC_M98_STAT}{Statistic of the nonstationarity ratio test by Mahrt (1998) for FC.}
+\item{FC_M98_FLAG}{Flag of the FC_M98_STAT (0: negligible evidences of error, IF M_98_STAT<2; 1: moderate evidences of error, IF 2\eqn{\le}M98_STAT\eqn{\le}3; 2: severe evidences of error, IF M98_STAT>3).}
 \item{CO2}{Carbon Dioxide (CO2) in mole fraction of wet air.}
 \item{CO2_SIGMA}{Standard deviation of carbon dioxide in mole fraction of wet air.}
 \item{H2O}{Water (H2O) vapor mole fraction.}
