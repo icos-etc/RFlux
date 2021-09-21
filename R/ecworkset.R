@@ -22,9 +22,6 @@ which(colnames(EPout)=="daytime"),
 which(colnames(EPout)=="file_records"),
 which(colnames(EPout)=="used_records"),
 which(colnames(EPout)=="(z-d)/L"),
-which(colnames(EPout)=="Tau"),
-which(colnames(EPout)=="qc_Tau"),
-which(colnames(EPout)=="rand_err_Tau"),
 which(colnames(EPout)=="H"),
 which(colnames(EPout)=="qc_H"),
 which(colnames(EPout)=="rand_err_H"),
@@ -106,7 +103,7 @@ QCstat.xts <- xts(QCstat[,-1], order.by=timestamp_QCstat)
 
 ecworkset.xts <- merge(EPout.xts, GA_Diag.xts, EPqc.xts, EPmd.xts, QCstat.xts) 
 set2exp <- data.frame(format(time(ecworkset.xts),"%Y%m%d%H%M", tz="GMT"), coredata(ecworkset.xts))
-colnames(set2exp) <- c("TIMESTAMP", "DNtime", "file_records", "used_records","Stability","Tau","qcTau","ruTau","H","qcH","ruH","LE","qcLE","ruLE","CO2flux", "qcCO2flux", "ruCO2", "CO2str", "ustar", "U","W","WDir", "WSpeed", "u_var", "v_var", "w_var", "MOL", "TSonic", "AT", "AP", "rho", "cp", "ts_var", "CO2mf", "co2_var", "H2Omf", "h2o_var", "CO2scf", "H2Oscf", "Hscf", "GADiag", "dw","dts","dco2","dh2o","dwts","dwco2","dwh2o","itc_w", "acquisition_frequency", "canopy_height", "SA_height", "SA_NorthOffset", colnames(QCstat)[-1])
+colnames(set2exp) <- c("TIMESTAMP", "DNtime", "file_records", "used_records","Stability","H", "qcH", "ruH", "LE", "qcLE", "ruLE", "CO2flux", "qcCO2flux", "ruCO2", "CO2str", "ustar", "U","W","WDir", "WSpeed", "u_var", "v_var", "w_var", "MOL", "TSonic", "AT", "AP", "rho", "cp", "ts_var", "CO2mf", "co2_var", "H2Omf", "h2o_var", "CO2scf", "H2Oscf", "Hscf", "GADiag", "dw","dts","dco2","dh2o","dwts","dwco2","dwh2o","itc_w", "acquisition_frequency", "canopy_height", "SA_height", "SA_NorthOffset", colnames(QCstat)[-1])
 
 
 if(!is.null(path_output) & !is.null(FileName)) fwrite(set2exp, paste0(path_output, "/", FileName, ".csv"), sep=",", row.names=FALSE, col.names=TRUE, quote=FALSE, na="-9999")
