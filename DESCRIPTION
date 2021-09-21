@@ -1,8 +1,8 @@
 Package: RFlux
 Type: Package
 Title: Eddy Covariance Flux Data Processing
-Version: 3.0.0
-Date: 2021-07-11
+Version: 2.0.0
+Date: 2020-12-29
 Authors@R: 
   c(person(given = "Domenico",
            family = "Vitale",
@@ -17,9 +17,11 @@ Author: Domenico Vitale [aut, cre],
 Maintainer: Domenico Vitale <domvit@unitus.it>
 Description: An R graphical user interface for processing eddy covariance raw data and release high quality fluxes of the main GHGs exchanged by ecosystems and agricultural fields. Fluxes are estimated through a call to the open source EddyPro software (registered trademark, LI-COR, Biosciences, 2020). 'RFlux' provides tools for the metadata management as well as for the implementation of the robust data cleaning procedure described by Vitale et al (2020) <doi:10.5194/bg-17-1367-2020>.
 License: GPL(>=2)
-Imports: stats, utils, bit64, data.table, imputeTS, robustbase, zoo, xts, stringr, stlplus, egcm, alphaOutlier, timeDate, car, robfilter, future, future.apply, lubridate, MASS, gtools
+Imports: stats, utils, bit64, data.table, imputeTS, robustbase, zoo,
+        xts, stringr, stlplus, egcm, alphaOutlier, timeDate, car,
+        robfilter, future, future.apply, lubridate, MASS, gtools
 Depends: R (>= 3.5.0)
-Suggests: 
-    knitr,
-    rmarkdown
+Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2021-06-10 04:32:43 UTC; mac
