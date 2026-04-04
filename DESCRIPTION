@@ -17,7 +17,7 @@ Author: Domenico Vitale [aut, cre],
 Maintainer: Domenico Vitale <domvit@unitus.it>
 Description: An R graphical user interface for processing eddy covariance raw data and release high quality fluxes of the main GHGs exchanged by ecosystems and agricultural fields. Fluxes are estimated through a call to the open source EddyPro software (registered trademark, LI-COR, Biosciences, 2020). 'RFlux' provides tools for the metadata management as well as for the implementation of the robust data cleaning procedure described by Vitale et al (2020) <doi:10.5194/bg-17-1367-2020>.
 License: GPL(>=2)
-Imports: stats, utils, bit64, data.table, imputeTS, robustbase, zoo, xts, stringr, stlplus, pracma, alphaOutlier, timeDate, car, robfilter, future, future.apply, lubridate, MASS, gtools, tools, diptest, forecast, boot, bayestestR, HDInterval, egcm
+Imports: stats, utils, bit64, data.table, imputeTS, robustbase, zoo, xts, stringr, stlplus, pracma, alphaOutlier, timeDate, car, robfilter, future, future.apply, lubridate, MASS, gtools, tools, diptest, forecast, boot, bayestestR, HDInterval, egcm, parallel
 Depends: R (>= 3.5.0)
 Suggests: 
     knitr,
