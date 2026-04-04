@@ -105,7 +105,10 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
 
 
 ## PreWhitening + BOOTSTRAPPING + Smoothing
- 	bootccf_cw <- tsboot(cbind(x1,z1), function(x) ccf(x[,1],x[,2],na.action=na.pass, plot=FALSE, lag.max=LAG.MAX)$acf, R=Rboot, sim="fixed", l=LAG.MAX*2, parallel="snow");
+	parallel.option <- if (.Platform$OS.type == "windows") "snow" else "multicore"
+	nc <- detectCores()-1
+
+ 	bootccf_cw <- tsboot(cbind(x1,z1), function(x) ccf(x[,1],x[,2],na.action=na.pass, plot=FALSE, lag.max=LAG.MAX)$acf, R=Rboot, sim="fixed", l=LAG.MAX*2, parallel=parallel.option, ncpus=nc);
  	ccf_cw <- unlist(apply(bootccf_cw$t, MARGIN=2, function(x) mean(x, na.rm=TRUE)));
     ccfs_cw <- unlist(zoo::na.locf(zoo::na.locf(rollapply(ccf_cw, width=wdt, FUN="mean", fill=NA) , na.rm=FALSE), fromLast=TRUE));
   	ccfs_cw1 <- unlist(apply(bootccf_cw$t, MARGIN=1, function(x) which.max(abs(as.vector(zoo::na.locf(zoo::na.locf(rollapply(x, width=wdt, FUN="mean", fill=NA), na.rm=FALSE), fromLast=TRUE))))));
@@ -114,7 +117,7 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
     hdis_cw <- HDInterval::hdi(ccfs_cw1, credMass=.95);
 	hdis_cw2 <- HDInterval::hdi(ccfs_cw2, credMass=.95);
 
- 	bootccf_ct <- tsboot(cbind(x1,y1), function(x) ccf(x[,1],x[,2],na.action=na.pass, plot=FALSE, lag.max=LAG.MAX)$acf, R=Rboot, sim="fixed", l=LAG.MAX*2, parallel="snow");
+ 	bootccf_ct <- tsboot(cbind(x1,y1), function(x) ccf(x[,1],x[,2],na.action=na.pass, plot=FALSE, lag.max=LAG.MAX)$acf, R=Rboot, sim="fixed", l=LAG.MAX*2, parallel=parallel.option, ncpus=nc);
  	ccf_ct <- unlist(apply(bootccf_ct$t, MARGIN=2, function(x) mean(x, na.rm=TRUE)));
     ccfs_ct <- unlist(zoo::na.locf(zoo::na.locf(rollapply(ccf_ct, width=wdt, FUN="mean", fill=NA) , na.rm=FALSE), fromLast=TRUE));
  	ccfs_ct1 <- unlist(apply(bootccf_ct$t, MARGIN=1, function(x) which.max(abs(as.vector(zoo::na.locf(zoo::na.locf(rollapply(x, width=wdt, FUN="mean", fill=NA), na.rm=FALSE), fromLast=TRUE))))));
@@ -122,7 +125,7 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
     hdis_ct <- HDInterval::hdi(ccfs_ct1, credMass=.95);
     hdis_ct2 <- HDInterval::hdi(ccfs_ct2, credMass=.95);
     
- 	bootccf_wc <- tsboot(cbind(x3,z3), function(x) ccf(x[,1],x[,2],na.action=na.pass, plot=FALSE, lag.max=LAG.MAX)$acf, R=Rboot, sim="fixed", l=LAG.MAX*2, parallel="snow");
+ 	bootccf_wc <- tsboot(cbind(x3,z3), function(x) ccf(x[,1],x[,2],na.action=na.pass, plot=FALSE, lag.max=LAG.MAX)$acf, R=Rboot, sim="fixed", l=LAG.MAX*2, parallel=parallel.option, ncpus=nc);
  	ccf_wc <- unlist(apply(bootccf_wc$t, MARGIN=2, function(x) mean(x, na.rm=TRUE)));
     ccfs_wc <- unlist(zoo::na.locf(zoo::na.locf(rollapply(ccf_wc, width=wdt, FUN="mean", fill=NA) , na.rm=FALSE), fromLast=TRUE))
  	ccfs_wc1 <- unlist(apply(bootccf_wc$t, MARGIN=1, function(x) which.max(abs(as.vector(zoo::na.locf(zoo::na.locf(rollapply(x, width=wdt, FUN="mean", fill=NA), na.rm=FALSE), fromLast=TRUE))))));
@@ -131,7 +134,7 @@ tlag_detection <- function (scalar_var, tsonic_var, w_var, mfreq, wdt=5, model =
  	hdis_wc2 <- HDInterval::hdi(ccfs_wc2, credMass=.95);
 
 
- 	bootccf_tc <- tsboot(cbind(x2,y2), function(x) ccf(x[,1],x[,2],na.action=na.pass, plot=FALSE, lag.max=LAG.MAX)$acf, R=Rboot, sim="fixed", l=LAG.MAX*2, parallel="snow");
+ 	bootccf_tc <- tsboot(cbind(x2,y2), function(x) ccf(x[,1],x[,2],na.action=na.pass, plot=FALSE, lag.max=LAG.MAX)$acf, R=Rboot, sim="fixed", l=LAG.MAX*2, parallel=parallel.option, ncpus=nc);
  	ccf_tc <- unlist(apply(bootccf_tc$t, MARGIN=2, function(x) mean(x, na.rm=TRUE)));
     ccfs_tc <- unlist(zoo::na.locf(zoo::na.locf(rollapply(ccf_tc, width=wdt, FUN="mean", fill=NA) , na.rm=FALSE), fromLast=TRUE));
  	ccfs_tc1 <- unlist(apply(bootccf_tc$t, MARGIN=1, function(x) which.max(abs(as.vector(zoo::na.locf(zoo::na.locf(rollapply(x, width=wdt, FUN="mean", fill=NA), na.rm=FALSE), fromLast=TRUE))))));
