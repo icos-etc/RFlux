@@ -85,15 +85,16 @@ IRGA <- substr(EPmd[1,"co2_irga_model"],1,6)
 if(IRGA=="li7200"){
 	GA_TCellDiag <- apply(cbind(EPout[,"t_out_LI-7200"], EPout[,"t_in_LI-7200"]), 1, function(x) min(x, na.rm=TRUE));
 	GA_DiagVar <- cbind(EPout[,"head_detect_LI-7200"], GA_TCellDiag, EPout[,"aux_in_LI-7200"], EPout[,"delta_p_LI-7200"], EPout[,"chopper_LI-7200"], EPout[,"detector_LI-7200"], EPout[,"pll_LI-7200"], EPout[,"sync_LI-7200"]);
-	GA_Diag <- apply(GA_DiagVar, MARGIN=1, function(x) sum(x, na.rm=TRUE))
+	GA_Diag <- apply(GA_DiagVar, MARGIN=1, function(x) sum(x, na.rm=TRUE));
+	GA_Diag.xts <- xts(GA_Diag,  order.by=timestamp_EPout)
 	}
 
 if(IRGA=="li7500"){
 	GA_DiagVar <- cbind(EPout[,"chopper_LI-7500"], EPout[,"detector_LI-7500"], EPout[,"pll_LI-7500"], EPout[,"sync_LI-7500"]);
-	GA_Diag <- apply(GA_DiagVar, MARGIN=1, function(x) sum(x, na.rm=TRUE))
+	GA_Diag <- apply(GA_DiagVar, MARGIN=1, function(x) sum(x, na.rm=TRUE));
+	GA_Diag.xts <- xts(GA_Diag,  order.by=timestamp_EPout)
 	}
 
-GA_Diag.xts <- xts(GA_Diag,  order.by=timestamp_EPout)
 if (IRGA!="li7200" & IRGA!="li7500") GA_Diag.xts <- xts(rep(0, length(timestamp_EPout)), order.by=timestamp_EPout)
 
 ############################################################################################################################################################################################################################
