@@ -82,7 +82,7 @@ hod <- gl(48,1,N)
 hodb <- gl(12,4,N)
 zero_vector <- rep(0,N)
 hz <- ec_data[,"acquisition_frequency"]
-
+file_records <- ec_data[,"file_records"]
 
 #################################################################################################################################################################################################################
 #
@@ -126,7 +126,7 @@ FC_LGD_STAT <- replace(ec_data[,"LGD_Fc"], which(is.na(ec_data[,"LGD_Fc"])), 180
 FC_LGD_FLAG <- as.vector(replace(replace(replace(zero_vector, which(ec_data[,"LGD_Fc"]>90),1), which(ec_data[,"LGD_Fc"]>180),2),which(is.na(NEE_raw)), 2))
 
 SA_Diag0 <- zero_vector
-SA_Diag <- replace(SA_Diag0, which(ec_data[,"SADiag"]>(0.002 * N)), 1)
+SA_Diag <- replace(SA_Diag0, which(ec_data[,"SADiag"]>(0.002 * file_records)), 1)
 
 GA_Diag <- ec_data[,"GADiag"]
 
